@@ -1,0 +1,24 @@
+
+BICICLETA|num_id|marca|modelo|color|anio|tipo_alimentacion|modalidad|tipo_freno|precio|rodado|talle|transmision
+BICICLETA|1|Trek|Marlin 7|Rojo|2023|Humana|Todo terreno|Disco|450000.00|29|L|21 velocidades
+BICICLETA|2|Specialized|Rockhopper|Negro|2022|Humana|Todo terreno|Disco|380000.00|27.5|M|18 velocidades
+BICICLETA|3|Giant|Escape 3|Azul|2024|Humana|Urbano|V-Brake|250000.00|28|M|7 velocidades
+BICICLETA|4|Cannondale|CAAD13|Verde|2023|Humana|Deportivo|Disco|850000.00|28|S|22 velocidades
+BICICLETA|5|Scott|Spark 900|Gris|2024|Humana|Todo terreno|Disco|1200000.00|29|L|12 velocidades
+
+
+AUTO|num_id|marca|modelo|color|anio|tipo_alimentacion|modalidad|tipo_freno|precio|motor|cant_puertas|capacidad_tanque
+AUTO|6|Toyota|Corolla|Blanco|2023|Combustion interna|Urbano|ABS|25000000.00|1800|4|50.0
+AUTO|7|Ford|Ranger|Negro|2024|Combustion interna|Todo terreno|ABS|35000000.00|3200|4|80.0
+AUTO|8|Chevrolet|Onix|Rojo|2022|Combustion interna|Urbano|ABS|18000000.00|1200|5|44.0
+AUTO|9|Tesla|Model 3|Gris|2024|Electrico|Deportivo|ABS|45000000.00|0|4|0.0
+AUTO|10|Volkswagen|Amarok|Azul|2023|Combustion interna|Todo terreno|ABS|38000000.00|2000|4|80.0
+AUTO|11|Fiat|Cronos|Blanco|2023|Combustion interna|Urbano|ABS|16500000.00|1300|4|48.0
+
+MOTOCICLETA|num_id|marca|modelo|color|anio|tipo_alimentacion|modalidad|tipo_freno|precio|tamanio_motor|tipo_motor|tipo_ciclo
+MOTOCICLETA|12|Honda|CB 190|Roja|2023|Combustion interna|Urbano|Disco|2500000.00|190|Monocilindrico|4
+MOTOCICLETA|13|Yamaha|YZF-R3|Azul|2024|Combustion interna|Deportivo|Disco|6500000.00|321|Bicilindrico|4
+MOTOCICLETA|14|Kawasaki|Ninja 400|Verde|2023|Combustion interna|Deportivo|Disco|7200000.00|399|Bicilindrico|4
+MOTOCICLETA|15|Bajaj|Rouser 200|Negro|2022|Combustion interna|Urbano|Disco|1800000.00|200|Monocilindrico|4
+MOTOCICLETA|16|Suzuki|GSX-R750|Blanco|2024|Combustion interna|Deportivo|Disco|12000000.00|750|Tetracilindrico|4
+MOTOCICLETA|17|Motomel|Skua 150|Gris|2023|Combustion interna|Todo terreno|Tambor|950000.00|150|Monocilindrico|4
