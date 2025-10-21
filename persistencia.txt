@@ -1,7 +1,5 @@
 BICICLETA|1|Vairo|XR 4.0|Azul|2018|None|Todo Terreno|Disco|1.200.000|29|M|2x9
 BICICLETA|1|Zenith|Juanson Full Pro Max|Naranjuanson|2025|None|Todo Terreno|Disco|90.000.000|27.5|S|1x12
-BICICLETA|25|Juanson|Pequeño J|Blanco|2025|None|Todo Terreno|Disco|12.000.000|26|XS|1x12
-BICICLETA|58|JuanSonBike|La Guacha Yanson|Brown|2003|None|Rutera bien pulenta|No tiene la desgraciada|12.000|26|XS|1x3
 BICICLETA|49|d|d|d|2023|None|Rural Bike|hidraulicos|12.000.000|29|L|2x10
 BICICLETA|3|Venzo|Vulcan|Rojo|2016|None|montaña|hidraulicos|12000000.0|29|m|1x11
 BICICLETA|88|Giant|Talon|Negro|2017|None|montaña|Hidraulicos|8500000.0|29|M|1x11
