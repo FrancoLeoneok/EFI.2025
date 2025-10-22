@@ -43,11 +43,10 @@ class Motocicleta(Vehiculo):
 
 class Concesionaria:
 
-    def __init__(self,inventario = None):
+    def __init__(self,inventario):
         if inventario is None:
             self.inventario: list[Vehiculo] = []
-        else:
-            self.inventario: list[Vehiculo] = inventario
+        
     
     def agregar_vehiculo(self,vehiculo:Vehiculo):
         self.inventario.append(vehiculo)
