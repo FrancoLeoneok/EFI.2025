@@ -88,6 +88,7 @@ class Concesionaria:
         concesionaria.inventario.append(bicicleta)
         with open('persistencia.txt','a',encoding='utf-8') as file:
             file.write(f'BICICLETA|{bicicleta.num_id}|{bicicleta.marca}|{bicicleta.modelo}|{bicicleta.color}|{bicicleta.anio}|{bicicleta.tipo_alimentacion}|{bicicleta.modalidad}|{bicicleta.tipo_frenos}|{bicicleta.precio}|{bicicleta.rodado}|{bicicleta.talle}|{bicicleta.transmision}\n')
+   
     def agregar_auto(self):
         auto:Auto
         opciones_modalidad = ['Hatchback','Sedan','SUV','MUV',"Coupe","Convertible","camioneta"]
@@ -124,7 +125,6 @@ class Concesionaria:
         concesionaria.inventario.append(auto)
         with open('persistencia.txt','a',encoding='utf-8') as file:
             file.write(f'BICICLETA|{auto.num_id}|{auto.marca}|{auto.modelo}|{auto.color}|{auto.anio}|{auto.tipo_alimentacion}|{auto.modalidad}|{auto.tipo_frenos}|{auto.precio}|{auto.motor}|{auto.cant_puertas}|{auto.capacidad_tanque}\n')
-
 
 
     def agregar_moto(self):
