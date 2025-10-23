@@ -44,7 +44,7 @@ class Motocicleta(Vehiculo):
 class Concesionaria:
 
     def __init__(self,inventario):
-        if inventario is None:
+        if inventario:
             self.inventario: list[Vehiculo] = []
         
     
