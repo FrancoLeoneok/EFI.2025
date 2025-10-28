@@ -176,8 +176,7 @@ class Concesionaria:
     def modificar_precio(self):
         pass
 
-    def venta_vehiculo(self, num_id : int ):
-        def venta_vehiculo(self, num_id : int):
+    def venta_vehiculo(self, num_id : int ):     
         hallado = False
         for x in self.inventario:
             if x in num_id == num_id:
