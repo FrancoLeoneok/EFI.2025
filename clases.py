@@ -44,8 +44,7 @@ class Motocicleta(Vehiculo):
 class Concesionaria:
 
     def __init__(self,inventario):
-        if inventario:
-            self.inventario: list[Vehiculo] = []
+        self.inventario: list[Vehiculo] = inventario
         
     
     def agregar_vehiculo(self,vehiculo:Vehiculo):
