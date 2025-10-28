@@ -85,7 +85,7 @@ class Concesionaria:
             transmision = transmision
         )
         concesionaria.inventario.append(bicicleta)
-        with open('persistencia.txt','a',encoding='utf-8') as file:
+        with open('inventario.txt','a',encoding='utf-8') as file:
             file.write(f'BICICLETA|{bicicleta.num_id}|{bicicleta.marca}|{bicicleta.modelo}|{bicicleta.color}|{bicicleta.anio}|{bicicleta.tipo_alimentacion}|{bicicleta.modalidad}|{bicicleta.tipo_frenos}|{bicicleta.precio}|{bicicleta.rodado}|{bicicleta.talle}|{bicicleta.transmision}\n')
    
     def agregar_auto(self):
@@ -122,7 +122,7 @@ class Concesionaria:
            
         )
         concesionaria.inventario.append(auto)
-        with open('persistencia.txt','a',encoding='utf-8') as file:
+        with open('inventario.txt','a',encoding='utf-8') as file:
             file.write(f'BICICLETA|{auto.num_id}|{auto.marca}|{auto.modelo}|{auto.color}|{auto.anio}|{auto.tipo_alimentacion}|{auto.modalidad}|{auto.tipo_frenos}|{auto.precio}|{auto.motor}|{auto.cant_puertas}|{auto.capacidad_tanque}\n')
 
 
@@ -160,7 +160,7 @@ class Concesionaria:
            
         )
         concesionaria.inventario.append(moto)
-        with open('persistencia.txt','a',encoding='utf-8') as file:
+        with open('inventario.txt','a',encoding='utf-8') as file:
             file.write(f'BICICLETA|{moto.num_id}|{moto.marca}|{moto.modelo}|{moto.color}|{moto.anio}|{moto.tipo_alimentacion}|{moto.modalidad}|{moto.tipo_frenos}|{moto.precio}|{moto.tamanio_motor}|{moto.tipo_motor}|{moto.tipo_ciclo}\n')
 
     def eliminar_vehiculo(self, num_id: int):
@@ -192,7 +192,7 @@ class Concesionaria:
 
 def cargar_catalogo(catalogo):
     vehiculos = []
-    with open('vehiculos_registro.txt',encoding='utf-8') as file:
+    with open('inventario.txt',encoding='utf-8') as file:
         archivo = file.readlines()
         for linea in archivo:
             dato = linea.strip().split('|')
