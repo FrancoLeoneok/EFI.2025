@@ -18,7 +18,7 @@ def listar_inventario(concesionaria):
     print("="*50)
 
 def main():
-    vehiculos = cargar_catalogo('vehiculos_registro.txt') # carga el catalogo inicial
+    vehiculos = cargar_catalogo('inventario.txt') # carga el catalogo inicial
     concesionaria = Concesionaria(vehiculos)
     print(f"total de existencias: {len(concesionaria.inventario)-1} vehiculos")
     
