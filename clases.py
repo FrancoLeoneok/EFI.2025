@@ -84,7 +84,7 @@ class Concesionaria:
             talle = talle.capitalize(),
             transmision = transmision
         )
-        concesionaria.inventario.append(bicicleta)
+        self.inventario.append(bicicleta)
         with open('inventario.txt','a',encoding='utf-8') as file:
             file.write(f'BICICLETA|{bicicleta.num_id}|{bicicleta.marca}|{bicicleta.modelo}|{bicicleta.color}|{bicicleta.anio}|{bicicleta.tipo_alimentacion}|{bicicleta.modalidad}|{bicicleta.tipo_frenos}|{bicicleta.precio}|{bicicleta.rodado}|{bicicleta.talle}|{bicicleta.transmision}\n')
    
