@@ -1,8 +1,10 @@
+
+
 import random
-from funciones import validacion,validacion_try
+from funcion import validacion,validacion_try
 
 class Vehiculo:
-    def __init__(self,num_id:int,marca:str,modelo:str,color:str,anio:int,tipo_alimentacion:str,modalidad:str,tipo_freno:str,precio:float):
+    def __init__(self,num_id,marca:str,modelo:str,color:str,anio:int,tipo_alimentacion:str,modalidad:str,tipo_freno:str,precio:float):
         self.num_id = num_id
         self.marca = marca
         self.modelo = modelo
@@ -35,7 +37,7 @@ class Auto(Vehiculo):
         self.capacidad_tanque = capacidad_tanque # en litros
 
 class Motocicleta(Vehiculo):
-    def __init__(self, num_id, marca, modelo, color, anio, tipo_alimentacion, modalidad,precio,tipo_freno,tamanio_motor:int,tipo_motor:str,tipo_ciclo:int):
+    def __init__(self, num_id, marca, modelo, color, anio, tipo_alimentacion, modalidad,precio,tipo_freno,tamanio_motor, tipo_motor,tipo_ciclo):
         super().__init__(num_id, marca, modelo, color, anio, tipo_alimentacion, modalidad, tipo_freno,precio)
         self.tamanio_motor = tamanio_motor # puede agregarse como un atributo de clase madre, comparte con Auto
         self.tipo_motor = tipo_motor # monocilindrico, bicilindrico, etc
@@ -54,7 +56,7 @@ class Concesionaria:
         bicicleta:Bicicleta
         opciones_modalidad = ['montaña','gravel','ruta','descenso']
         opciones_talle = ['xs','s','m','l','xl']
-        opciones_frenos = ['mecanicos','hidraulicos']
+        opciones_frenos = ['mecanico','hidraulico']
         opciones_rodado = ['26','27.5','28','29']
                         
         marca = input(str('Ingrese la marca : '))
@@ -71,7 +73,7 @@ class Concesionaria:
         precio = validacion_try('Ingrese el precio: ','El precio debe ser un entero positivo','Se debe ingresar un numero entero',0)
         
         bicicleta = Bicicleta(
-            num_id = random.sample(range(1,100), 1)[0], #metodo sample genera valor unico
+            num_id= self.generador_id(),
             marca = marca.capitalize(),
             modelo = modelo.capitalize(),
             color = color,
@@ -90,15 +92,17 @@ class Concesionaria:
    
     def agregar_auto(self):
         auto:Auto
-        opciones_modalidad = ['Hatchback','Sedan','SUV','MUV',"Coupe","Convertible","camioneta"]
-        opciones_frenos = ['tambor','disco', "ABS"]
+        opciones_modalidad = ['hatchback','sedan','suv','muv',"coupe","convertible","camioneta"]
+        opciones_frenos = ['tambor','disco', "abs"]
+        opciones_alimentacion = ["combustion","electrica", "hibrido"]
         
         marca = input(str('Ingrese la marca : '))
         modelo = input(str('Ingrese el modelo : '))        
         color = input(str('Ingrese el color: '))
         anio = validacion_try('Ingrese el año (2000-2025): ','Solo años disponibles 2000 a 2025','Debe ingresar un numero entero',2000,2025)
-        modalidad = validacion(f'Ingrese la modalidad {opciones_modalidad}:',f'Solo modalidades declaradas {opciones_modalidad}',opciones_modalidad)        
-        tipo_freno = validacion(f'Ingrese el tipo de frenos del auto {opciones_frenos}',f'Solo ingresar tipo valid {opciones_frenos}',opciones_frenos)
+        tipo_alimentacion = validacion(f"Ingrese el tipo de alimentacion {opciones_alimentacion}:", f"alimentacion {opciones_alimentacion}",opciones_alimentacion)
+        modalidad = validacion (f"Ingrese la modalidad {opciones_modalidad}:",f"Solo modalidades declaradas {opciones_modalidad}",opciones_modalidad)
+        tipo_freno = validacion(f"Ingrese el tipo de frenos del auto {opciones_frenos}",f"Solo ingresar tipo valid {opciones_frenos}",opciones_frenos)
         motor = input("ingrese el tamaño de motor: ")
         cant_puertas = int(input("ingrese la cantidad de puertas: "))
         capacidad_tanque = float(input("ingrese la capacidad del tanque de combustible: "))
@@ -107,7 +111,7 @@ class Concesionaria:
         precio = validacion_try('Ingrese el precio: ','El precio debe ser un entero positivo','Se debe ingresar un numero entero',0)
         
         auto = Auto(
-            num_id = random.sample(range(1,100), 1)[0], #metodo sample genera valor unico
+            num_id = self.generador_id(),
             marca = marca.capitalize(),
             modelo = modelo.capitalize(),
             color = color,
@@ -116,36 +120,38 @@ class Concesionaria:
             modalidad = modalidad.capitalize(),
             tipo_freno = tipo_freno.capitalize(),
             precio = precio,
-            motor = motor.capitalize()
-            cant_puertas = cant_puertas.capitalize(),
-            capacidad_tanque = capacidad_tanque.capitalize()
+            motor = motor,
+            cant_puertas = cant_puertas,
+            capacidad_tanque = capacidad_tanque
            
         )
-        concesionaria.inventario.append(auto)
+        self.inventario.append(auto)
         with open('inventario.txt','a',encoding='utf-8') as file:
-            file.write(f'BICICLETA|{auto.num_id}|{auto.marca}|{auto.modelo}|{auto.color}|{auto.anio}|{auto.tipo_alimentacion}|{auto.modalidad}|{auto.tipo_frenos}|{auto.precio}|{auto.motor}|{auto.cant_puertas}|{auto.capacidad_tanque}\n')
+            file.write(f'AUTO|{auto.num_id}|{auto.marca}|{auto.modelo}|{auto.color}|{auto.anio}|{auto.tipo_alimentacion}|{auto.modalidad}|{auto.tipo_frenos}|{auto.precio}|{auto.motor}|{auto.cant_puertas}|{auto.capacidad_tanque}\n')
 
 
     def agregar_moto(self):
-        moto: motocicleta
-        opciones_modalidad = ['deportivas','touring','off-road','urbanas',"adventure"]
-        opciones_frenos = ['tambor','disco',"ABS"]
+        opciones_alimentacion = ["combustible", "electrica"]
+        opciones_modalidad = ['deportiva','touring','offroad','urbana',"adventure"]
+        opciones_frenos = ['tambor','disco',"abs"]
+        opciones_tipo_motor = ['monocilindrico','bicilindrico','tricilindrico','cuatricilindrico']
         
         marca = input(str('Ingrese la marca : '))
         modelo = input(str('Ingrese el modelo : '))        
         color = input(str('Ingrese el color: '))
         anio = validacion_try('Ingrese el año (2012-2025): ','Solo años disponibles 2012 a 2025','Debe ingresar un numero entero',2012,2025)
+        tipo_alimentacion = validacion(f"ingrese el tipo de alimentacion {opciones_alimentacion}:" ,f"Solo tipos de alimentacion señaladas {opciones_alimentacion}",opciones_alimentacion)
         modalidad = validacion(f'Ingrese la modalidad {opciones_modalidad}:',f'Solo modalidades declaradas {opciones_modalidad}',opciones_modalidad)        
         tipo_freno = validacion(f'Ingrese el tipo de frenos de la moto {opciones_frenos}',f'Solo ingresar tipo valid {opciones_frenos}',opciones_frenos)
-        tamanio_motor = input("ingrese el tamaño de motor: ")
-        tipo_motor = input("ingrese el tipo de motor: ")
-        tipo_ciclo = input("ingrese la cantidad de ciclos: ")
+        tamanio_motor = validacion_try("ingrese el tamaño del motor (en cc): ","El tamaño del motor debe ser un numero positivo","Se debe ingresar un numero entero",50)
+        tipo_motor = validacion(f'Ingrese el tipo de motor {opciones_tipo_motor}',f'Solo ingresar tipos de motor validos {opciones_tipo_motor}',opciones_tipo_motor)
+        tipo_ciclo = validacion_try("ingrese el tipo de ciclo (2 o 4 tiempos): ","El tipo de ciclo debe ser 2 o 4","Se debe ingresar un numero entero",2,4)
                 
         
         precio = validacion_try('Ingrese el precio: ','El precio debe ser un entero positivo','Se debe ingresar un numero entero',0)
         
         moto = Motocicleta(
-            num_id = random.sample(range(1,100), 1)[0], #metodo sample genera valor unico
+            num_id= self.generador_id(),
             marca = marca.capitalize(),
             modelo = modelo.capitalize(),
             color = color,
@@ -154,57 +160,76 @@ class Concesionaria:
             modalidad = modalidad.capitalize(),
             tipo_freno = tipo_freno.capitalize(),
             precio = precio,
-            tamanio_motor = tamanio_motor.capitalize(),
-            tipo_motor =tipo_motor.capitalize(),
-            tipo_ciclo = tipo_ciclo.capitalize()
+            tamanio_motor = tamanio_motor,
+            tipo_motor = tipo_motor.capitalize(),
+            tipo_ciclo = tipo_ciclo
            
         )
-        concesionaria.inventario.append(moto)
+        self.inventario.append(moto)
         with open('inventario.txt','a',encoding='utf-8') as file:
-            file.write(f'BICICLETA|{moto.num_id}|{moto.marca}|{moto.modelo}|{moto.color}|{moto.anio}|{moto.tipo_alimentacion}|{moto.modalidad}|{moto.tipo_frenos}|{moto.precio}|{moto.tamanio_motor}|{moto.tipo_motor}|{moto.tipo_ciclo}\n')
+            file.write(f'MOTOCICLETA|{moto.num_id}|{moto.marca}|{moto.modelo}|{moto.color}|{moto.anio}|{moto.tipo_alimentacion}|{moto.modalidad}|{moto.tipo_frenos}|{moto.precio}|{moto.tamanio_motor}|{moto.tipo_motor}|{moto.tipo_ciclo}\n')
 
-    def eliminar_vehiculo(self, num_id: int):
+    def generador_id(self):
+        id_existente = True             
+        while id_existente:
+            nuevo_id = random.sample(range(1,1000), 1)[0]
+            id_existente = False
+            for x in self.inventario:
+                if x.num_id == nuevo_id:
+                    id_existente = True
+        return nuevo_id
+
+    def eliminar_vehiculo(self, num_id):
         hallado = False
         for x in self.inventario:
             if x.num_id == num_id:
                 self.inventario.remove(x)
                 hallado = True
                 return f"El numero de ID {num_id} se elimino correctamente"
-            if not hallado:
-                return f"El numero de ID {num_id} no se encuentra"
+        return f"El numero de ID {num_id} no se encuentra"
                 
-    def modificar_precio(self):
-        pass
-
-    def venta_vehiculo(self, num_id : int ):     
+    def modificar_precio(self, num_id, nuevo_precio :float):
         hallado = False
         for x in self.inventario:
-            if x in num_id == num_id:
+            if x.num_id == num_id:
+                x.precio = nuevo_precio
+                hallado = True
+                return f"el precio del vehiculo id {num_id} se cambio correctamente"
+        return f"el numero id {num_id} no se encuentra"
+
+    def venta_vehiculo(self, num_id):     
+        hallado = False
+        for x in self.inventario:
+            if  x.num_id == num_id:
                 self.inventario.remove(x)
                 hallado = True
                 with open('ventas.txt','a',encoding='utf-8') as file:     
-                    file.write(f"{x.__class__.__name__},{Vehiculo.num_id},{Vehiculo.marca},{Vehiculo.modelo}\n")                                 
+                    file.write(f"{x.__class__.__name__},{x.num_id},{x.marca},{x.modelo}\n")                                 
                 return f"Venta del vehiculo ID {num_id} Registrada"
-        if not hallado:
-            return f"El numero de ID {num_id} no se encuentra"
-        
-
+        return f"El numero de ID {num_id} no se encuentra"
+      
 def cargar_catalogo(catalogo):
     vehiculos = []
     with open('inventario.txt',encoding='utf-8') as file:
-        archivo = file.readlines()
-        for linea in archivo:
-            dato = linea.strip().split('|')
-            tipo = dato [0]
-            if tipo == 'BICICLETA':
-                _,num_id,marca,modelo,color,anio,_,modalidad,tipo_freno,precio,rodado,talle,transmision = linea.strip().split('|')
-                vehiculos.append(Bicicleta(num_id,marca,modelo,color,anio,_,modalidad,tipo_freno,precio,rodado,talle,transmision)) 
+         archivo = file.readlines()
+         for linea in archivo:
+             dato = linea.strip().split('|')
+             tipo = dato [0]
+             if tipo == 'BICICLETA':
+                    _,num_id,marca,modelo,color,anio,_,modalidad,tipo_freno,precio,rodado,talle,transmision = linea.strip().split('|')
+                    vehiculos.append(Bicicleta(num_id,marca,modelo,color,anio,_,modalidad,tipo_freno,precio,rodado,talle,transmision)) 
     return vehiculos
 
-if __name__ == '__main__':
-    vehiculos = cargar_catalogo('vehiculos_registro.txt')
-    concesionaria = Concesionaria(vehiculos)
-    concesionaria.agregar_bici()
-    for v in concesionaria.inventario:
-        print(v)
+#agregar carga de autos y motos. 
+#Ver def de Eliminar
+# Agregar en ventas total y valor. 
 
+
+
+
+if __name__ == '__main__':
+        vehiculos = cargar_catalogo('vehiculos_registro.txt')
+        concesionaria = Concesionaria(vehiculos)
+        concesionaria.agregar_bici()
+        for v in concesionaria.inventario:
+            print(v)
