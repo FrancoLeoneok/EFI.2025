@@ -1,4 +1,4 @@
-from clases import Concesionaria, cargar_catalogo
+from clase import Concesionaria, cargar_catalogo
 
 def mostrar_menu():
     print("MENU DE OPCIONES")
@@ -7,8 +7,9 @@ def mostrar_menu():
     print("2. Agregar auto")
     print("3. Agregar motocicleta")
     print("4. Listar inventario")
-    print("5. Eliminar vehiculo (proximamente)")
-    print("6. Vender Vehiculo (proximamente)")
+    print("5. Eliminar vehiculo ")
+    print("6. Vender Vehiculo ")
+    print("7. Modificar precio vehiculo")
     print("0. Salir")
     print("="*30)
 
@@ -20,7 +21,7 @@ def listar_inventario(concesionaria):
 def main():
     vehiculos = cargar_catalogo('inventario.txt') # carga el catalogo inicial
     concesionaria = Concesionaria(vehiculos)
-    print(f"total de existencias: {len(concesionaria.inventario)-1} vehiculos")
+    print(f"total de existencias: {len(concesionaria.inventario)} vehiculos")
     
     while True: # while del menu
         mostrar_menu()
@@ -35,13 +36,17 @@ def main():
                 
             elif opcion == "2":
                 print("\n--- AGREGAR AUTO ---")
-                print("  Funcionalidad en desarrollo")
-                # self.agregar_auto()
+                concesionaria.agregar_auto()
+                print("Se agreo el auto")
+                
+                
                 
             elif opcion == "3":
                 print("\n--- AGREGAR MOTOCICLETA ---")
-                print("  Funcionalidad en desarrollo")
-                # self.agregar_moto()
+                concesionaria.agregar_moto()
+                print("Se agreo la motocicleta")
+                
+                
                 
             elif opcion == "4":
                 listar_inventario(concesionaria)
@@ -50,7 +55,7 @@ def main():
                 print("\n--- ELIMINAR VEHICULO ---")
                 listar_inventario(concesionaria)
                 try:
-                    num_id = int(input("\nIngrese el ID del vehdculo a eliminar: "))
+                    num_id = input("\nIngrese el ID del vehdculo a eliminar: ")
                     resultado = concesionaria.eliminar_vehiculo(num_id)
                     print(resultado)
                 except ValueError:
@@ -58,9 +63,26 @@ def main():
                 
             elif opcion == "6":
                 print("\n--- VENDER VEHICULO ---")
-                print("  Funcionalidad en desarrollo")
-                # self.venta_vehiculo()
+                listar_inventario(concesionaria)
+                try:
+                    num_id = input("\nIngrese el ID del vehdculo a vender: ")
+                    resultado = concesionaria.venta_vehiculo(num_id)
+                    print(resultado)
+                except ValueError:
+                    print("debe ingresar un numero valido")
                 
+            elif opcion == "7":
+                print("\n--- MODIFICAR PRECIO VEHICULO ---")
+                listar_inventario(concesionaria)
+                try:
+                    num_id = input("\nIngrese el ID del vehdculo a modificar: ")
+                    nuevo_precio = float(input("Ingrese el nuevo precio: "))
+                    resultado = concesionaria.modificar_precio(num_id, nuevo_precio)
+                    print(resultado)
+                except ValueError:
+                    print("debe ingresar un numero valido")
+                
+                    
             elif opcion == "0":
                 print("\nSaliendo del sistema")
                 break
