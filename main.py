@@ -27,7 +27,7 @@ def main():
         mostrar_menu()
         
         try:
-            opcion = input("\nSeleccione una opción: ").strip()
+            opcion = input("\nSeleccione una opcion: ").strip()
             
             if opcion == "1":
                 print("\n--- AGREGAR BICICLETA ---")
@@ -38,15 +38,11 @@ def main():
                 print("\n--- AGREGAR AUTO ---")
                 concesionaria.agregar_auto()
                 print("Se agreo el auto")
-                
-                
-                
+
             elif opcion == "3":
                 print("\n--- AGREGAR MOTOCICLETA ---")
                 concesionaria.agregar_moto()
                 print("Se agreo la motocicleta")
-                
-                
                 
             elif opcion == "4":
                 listar_inventario(concesionaria)
@@ -55,32 +51,33 @@ def main():
                 print("\n--- ELIMINAR VEHICULO ---")
                 listar_inventario(concesionaria)
                 try:
-                    num_id = input("\nIngrese el ID del vehdculo a eliminar: ")
+                    num_id = int(input("\nIngrese el ID del vehiculo a eliminar: "))
                     resultado = concesionaria.eliminar_vehiculo(num_id)
                     print(resultado)
                 except ValueError:
-                    print("debe ingresar un numero valido")
+                    print("Debe ingresar un numero valido")
                 
             elif opcion == "6":
                 print("\n--- VENDER VEHICULO ---")
                 listar_inventario(concesionaria)
+                print(f"Total de ventas registradas: ${concesionaria.total_ventas():,.2f}")
                 try:
-                    num_id = input("\nIngrese el ID del vehdculo a vender: ")
+                    num_id = int(input("\nIngrese el ID del vehiculo a vender: "))
                     resultado = concesionaria.venta_vehiculo(num_id)
                     print(resultado)
                 except ValueError:
-                    print("debe ingresar un numero valido")
+                    print("Debe ingresar un numero valido")
                 
             elif opcion == "7":
                 print("\n--- MODIFICAR PRECIO VEHICULO ---")
                 listar_inventario(concesionaria)
                 try:
-                    num_id = input("\nIngrese el ID del vehdculo a modificar: ")
+                    num_id = int(input("\nIngrese el ID del vehiculo a modificar: "))   
                     nuevo_precio = float(input("Ingrese el nuevo precio: "))
                     resultado = concesionaria.modificar_precio(num_id, nuevo_precio)
                     print(resultado)
                 except ValueError:
-                    print("debe ingresar un numero valido")
+                    print("Debe ingresar un numero valido")
                 
                     
             elif opcion == "0":
@@ -88,10 +85,10 @@ def main():
                 break
                 
             else:
-                print("\nOpcion invslida, seleccione una opciion del menu.")
+                print("\nOpcion invalida, seleccione una opcion del menu.")
 
         except Exception as error:
-            print(f"\nError inesperado: {error}")
+            print(f"\nError!! Detalle: {error}")
 
 if __name__ == '__main__':
     main()
