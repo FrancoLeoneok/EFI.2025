@@ -1,5 +1,3 @@
-
-
 import random
 from funcion import validacion,validacion_try
 
@@ -47,11 +45,7 @@ class Concesionaria:
 
     def __init__(self,inventario):
         self.inventario: list[Vehiculo] = inventario
-        
-    
-    def agregar_vehiculo(self,vehiculo:Vehiculo):
-        self.inventario.append(vehiculo)
-    
+           
     def agregar_bici(self):
         bicicleta:Bicicleta
         opciones_modalidad = ['montaña','gravel','ruta','descenso']
@@ -129,7 +123,6 @@ class Concesionaria:
         with open('inventario.txt','a',encoding='utf-8') as file:
             file.write(f'AUTO|{auto.num_id}|{auto.marca}|{auto.modelo}|{auto.color}|{auto.anio}|{auto.tipo_alimentacion}|{auto.modalidad}|{auto.tipo_frenos}|{auto.precio}|{auto.motor}|{auto.cant_puertas}|{auto.capacidad_tanque}\n')
 
-
     def agregar_moto(self):
         opciones_alimentacion = ["combustible", "electrica"]
         opciones_modalidad = ['deportiva','touring','offroad','urbana',"adventure"]
@@ -154,7 +147,7 @@ class Concesionaria:
             num_id= self.generador_id(),
             marca = marca.capitalize(),
             modelo = modelo.capitalize(),
-            color = color,
+            color = color.capitalize(),
             anio = anio,
             tipo_alimentacion = tipo_alimentacion.capitalize(),
             modalidad = modalidad.capitalize(),
@@ -179,35 +172,80 @@ class Concesionaria:
                     id_existente = True
         return nuevo_id
 
+    def actualizar_inventario(self)->bool:
+        with open('inventario.txt','w',encoding='utf-8') as file:
+            for vehiculo in self.inventario:
+                if isinstance (vehiculo, Bicicleta):
+                    file.write(f'BICICLETA|{vehiculo.num_id}|{vehiculo.marca}|{vehiculo.modelo}|{vehiculo.color}|{vehiculo.anio}|{vehiculo.tipo_alimentacion}|{vehiculo.modalidad}|{vehiculo.tipo_frenos}|{vehiculo.precio}|{vehiculo.rodado}|{vehiculo.talle}|{vehiculo.transmision}\n')
+                elif isinstance(vehiculo, Auto):
+                    file.write(f'AUTO|{vehiculo.num_id}|{vehiculo.marca}|{vehiculo.modelo}|{vehiculo.color}|{vehiculo.anio}|{vehiculo.tipo_alimentacion}|{vehiculo.modalidad}|{vehiculo.tipo_frenos}|{vehiculo.precio}|{vehiculo.motor}|{vehiculo.cant_puertas}|{vehiculo.capacidad_tanque}\n')
+                elif isinstance(vehiculo, Motocicleta):
+                    file.write(f'MOTOCICLETA|{vehiculo.num_id}|{vehiculo.marca}|{vehiculo.modelo}|{vehiculo.color}|{vehiculo.anio}|{vehiculo.tipo_alimentacion}|{vehiculo.modalidad}|{vehiculo.tipo_frenos}|{vehiculo.precio}|{vehiculo.tamanio_motor}|{vehiculo.tipo_motor}|{vehiculo.tipo_ciclo}\n')
+        return True
+    
     def eliminar_vehiculo(self, num_id):
         hallado = False
         for x in self.inventario:
             if x.num_id == num_id:
                 self.inventario.remove(x)
                 hallado = True
-                return f"El numero de ID {num_id} se elimino correctamente"
-        return f"El numero de ID {num_id} no se encuentra"
+
+        if not hallado:
+            return f'El numero de ID {num_id} del vehiculo no se encuentra'
+        
+        if self.actualizar_inventario():
+            return f'El numero de ID {num_id} se elimino correctamente'
+        return f'Fallo en la actualizacion del inventario'
                 
     def modificar_precio(self, num_id, nuevo_precio :float):
         hallado = False
         for x in self.inventario:
             if x.num_id == num_id:
-                x.precio = nuevo_precio
                 hallado = True
-                return f"el precio del vehiculo id {num_id} se cambio correctamente"
-        return f"el numero id {num_id} no se encuentra"
+                vehihuclo_hallado = x
+                
+        if not hallado:
+            return f'El numero de ID {num_id} del vehiculo no se encuentra'
+        
+        if nuevo_precio <= 0:
+            return f'El precio debe ser un numero positivo'
+        else:
+            vehihuclo_hallado.precio = nuevo_precio 
 
-    def venta_vehiculo(self, num_id):     
+        if self.actualizar_inventario():
+            return f'Precio del vehiculo con ID {num_id} se cambio correctamente'
+        else:
+            return f'Fallo en la actualizacion del inventario'
+        
+    def total_ventas(self):
+        total = 0
+        with open('ventas.txt','r',encoding='utf-8') as file:
+            for linea in file:
+                dato = linea.strip().split('|')
+                precio_venta = float(dato[9])
+                total += precio_venta
+                if total == 0:
+                    return "No se han realizado ventas aun"
+        return total
+        
+    def venta_vehiculo(self, num_id):
         hallado = False
         for x in self.inventario:
-            if  x.num_id == num_id:
-                self.inventario.remove(x)
+            if x.num_id == num_id:
+                self.inventario.remove(x) # se elimina del inventario
                 hallado = True
-                with open('ventas.txt','a',encoding='utf-8') as file:     
-                    file.write(f"{x.__class__.__name__},{x.num_id},{x.marca},{x.modelo}\n")                                 
-                return f"Venta del vehiculo ID {num_id} Registrada"
-        return f"El numero de ID {num_id} no se encuentra"
-      
+        
+        if not hallado:
+            return f"El numero de ID {num_id} del vehiculo no se encuentra"
+        
+        with open('ventas.txt','a',encoding='utf-8') as file:
+            file.write(f'VENDIDO|{x.num_id}|{x.marca}|{x.modelo}|{x.color}|{x.anio}|{x.tipo_alimentacion}|{x.modalidad}|{x.tipo_frenos}|{x.precio}\n') # se agrega al archivo de ventas
+
+        if self.actualizar_inventario():
+            return f"La venta del vehiculo de ID {num_id} se ha realizado con exito"
+        else:
+            return f"Fallo en la actualizacion del inventario"
+        
 def cargar_catalogo(catalogo):
     vehiculos = []
     with open('inventario.txt',encoding='utf-8') as file:
@@ -216,14 +254,15 @@ def cargar_catalogo(catalogo):
              dato = linea.strip().split('|')
              tipo = dato [0]
              if tipo == 'BICICLETA':
-                    _,num_id,marca,modelo,color,anio,_,modalidad,tipo_freno,precio,rodado,talle,transmision = linea.strip().split('|')
-                    vehiculos.append(Bicicleta(num_id,marca,modelo,color,anio,_,modalidad,tipo_freno,precio,rodado,talle,transmision)) 
+                 _, num_id, marca, modelo, color, anio, _, modalidad, tipo_freno, precio, rodado, talle, transmision = linea.strip().split('|')
+                 vehiculos.append(Bicicleta(int(num_id),marca= marca,modelo= modelo,color=color,anio=int(anio),tipo_alimentacion=_,modalidad=modalidad,tipo_freno=tipo_freno,precio=float(precio),rodado=rodado,talle=talle,transmision=transmision))
+             elif tipo == 'AUTO':
+                 _, num_id, marca, modelo, color, anio, tipo_alim, modalidad, tipo_freno, precio, motor, cant_puertas, capacidad_tanque = linea.strip().split('|')
+                 vehiculos.append(Auto(num_id=int(num_id),marca=marca,modelo=modelo,color=color,anio=int(anio),tipo_alimentacion=tipo_alim,modalidad=modalidad,precio=float(precio),tipo_freno=tipo_freno,motor=motor,cant_puertas=int(cant_puertas),capacidad_tanque=float(capacidad_tanque)))
+             elif tipo == 'MOTOCICLETA':
+                 _, num_id, marca, modelo, color, anio, tipo_alim, modalidad,tipo_freno, precio, tamanio_motor, tipo_motor, tipo_ciclo = linea.strip().split('|')
+                 vehiculos.append(Motocicleta(num_id=int(num_id),marca=marca,modelo=modelo,color=color,anio=int(anio),tipo_alimentacion=tipo_alim,modalidad=modalidad,precio=float(precio),tipo_freno=tipo_freno,tamanio_motor=int(tamanio_motor),tipo_motor=tipo_motor,tipo_ciclo=int(tipo_ciclo)))
     return vehiculos
-
-#agregar carga de autos y motos. 
-#Ver def de Eliminar
-# Agregar en ventas total y valor. 
-
 
 
 
