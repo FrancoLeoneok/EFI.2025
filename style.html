@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Concesionaria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .menu {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .menu h1 {
+            text-align: center;
+        }
+        .opciones {
+            list-style: none;
+            padding: 0;
+        }
+        .opciones li {
+            margin: 10px 0;
+        }
+        .opciones button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .opciones button:hover {
+            background-color: #0056b3;
+        }
+        .inventario {
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .formulario {
+            display: none;
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .formulario input, .formulario button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .formulario button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .formulario button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <h1>Menu opciones</h1>
+        <hr>
+        <ul class="opciones">
+            <li><button onclick="agregarBicicleta()">1. Agregar bicicleta</button></li>
+            <li><button onclick="agregarAuto()">2. Agregar auto</button></li>
+            <li><button onclick="agregarMotocicleta()">3. Agregar motocicleta</button></li>
+            <li><button onclick="listarInventario()">4. Listar inventario</button></li>
+            <li><button onclick="eliminarVehiculo()">5. Eliminar vehiculo</button></li>
+            <li><button onclick="venderVehiculo()">6. Vender Vehiculo</button></li>
+            <li><button onclick="modificarPrecio()">7. Modificar precio vehiculo</button></li>
+            <li><button onclick="salir()">0. Salir</button></li>
+        </ul>
+        <hr>
+    </div>
+
+    <div class="inventario" id="inventario" style="display: none;">
+        <h2>Inventario</h2>
+        <p id="totalExistencias">Total de existencias: 0 vehiculos</p>
+        <ul id="listaVehiculos"></ul>
+    </div>
+ <!--formulario -->
+    <div class="formulario" id="formAgregarBici">
+        <h2>Agregar Bicicleta</h2>
+        <form onsubmit="procesarAgregarBici(event)">
+            <input type="text" id="marcaBici" placeholder="Marca" required>
+            <input type="text" id="modeloBici" placeholder="Modelo" required>
+            <input type="number" id="precioBici" placeholder="Precio" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+<!--formulario -->
+    <div class="formulario" id="formAgregarAuto">
+        <h2>Agregar Auto</h2>
+        <form onsubmit="procesarAgregarAuto(event)">
+            <input type="text" id="marcaAuto" placeholder="Marca" required>
+            <input type="text" id="modeloAuto" placeholder="Modelo" required>
+            <input type="number" id="precioAuto" placeholder="Precio" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+
+<!--formulario -->
+    <div class="formulario" id="formAgregarMoto">
+        <h2>Agregar Motocicleta</h2>
+        <form onsubmit="procesarAgregarMoto(event)">
+            <input type="text" id="marcaMoto" placeholder="Marca" required>
+            <input type="text" id="modeloMoto" placeholder="Modelo" required>
+            <input type="number" id="precioMoto" placeholder="Precio" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+
+<!--formulario -->
+    <div class="formulario" id="formEliminar">
+        <h2>Eliminar Vehiculo</h2>
+        <p id="listaEliminar"></p>
+        <form onsubmit="procesarEliminar(event)">
+            <input type="number" id="idEliminar" placeholder="ID del vehiculo" required>
+            <button type="submit">Eliminar</button>
+        </form>
+    </div>
+
+<!--formulario -->
+    <div class="formulario" id="formVender">
+        <h2>Vender Vehiculo</h2>
+        <p id="listaVender"></p>
+        <form onsubmit="procesarVender(event)">
+            <input type="number" id="idVender" placeholder="ID del vehiculo" required>
+            <button type="submit">Vender</button>
+        </form>
+    </div>
+
+<!--formulario -->
+    <div class="formulario" id="formModificar">
+        <h2>Modificar Precio Vehiculo</h2>
+        <p id="listaModificar"></p>
+        <form onsubmit="procesarModificar(event)">
+            <input type="number" id="idModificar" placeholder="ID del vehiculo" required>
+            <input type="number" id="nuevoPrecio" placeholder="Nuevo precio" required>
+            <button type="submit">Modificar</button>
+        </form>
+    </div>
+
+    <script>
+        let inventario = []; 
+        let idCounter = 1; 
+
+        function mostrarFormulario(id) {
+            document.querySelectorAll('.formulario').forEach(form => form.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function ocultarFormularios() {
+            document.querySelectorAll('.formulario').forEach(form => form.style.display = 'none');
+        }
+
+        function actualizarInventario() {
+            const lista = document.getElementById('listaVehiculos');
+            lista.innerHTML = '';
+            inventario.forEach((veh, index) => {
+                const li = document.createElement('li');
+                li.textContent = ${index + 1}. ${veh.tipo}: ${veh.marca} ${veh.modelo} - Precio: $${veh.precio};
+                lista.appendChild(li);
+            });
+            document.getElementById('totalExistencias').textContent = Total de existencias: ${inventario.length} vehiculos;
+        }
+
+        function listarInventario() {
+            document.getElementById('inventario').style.display = 'block';
+            actualizarInventario();
+            ocultarFormularios();
+        }
+
+        function agregarBicicleta() {
+            mostrarFormulario('formAgregarBici');
+        }
+
+        function procesarAgregarBici(event) {
+            event.preventDefault();
+            const marca = document.getElementById('marcaBici').value;
+            const modelo = document.getElementById('modeloBici').value;
+            const precio = parseFloat(document.getElementById('precioBici').value);
+            inventario.push({ id: idCounter++, tipo: 'Bicicleta', marca, modelo, precio });
+            alert('Se agregó la bicicleta');
+            event.target.reset();
+            ocultarFormularios();
+        }
+
+        function agregarAuto() {
+            mostrarFormulario('formAgregarAuto');
+        }
+
+        function procesarAgregarAuto(event) {
+            event.preventDefault();
+            const marca = document.getElementById('marcaAuto').value;
+            const modelo = document.getElementById('modeloAuto').value;
+            const precio = parseFloat(document.getElementById('precioAuto').value);
+            inventario.push({ id: idCounter++, tipo: 'Auto', marca, modelo, precio });
+            alert('Se agregó el auto');
+            event.target.reset();
+            ocultarFormularios();
+        }
+
+        function agregarMotocicleta() {
+            mostrarFormulario('formAgregarMoto');
+        }
+
+        function procesarAgregarMoto(event) {
+            event.preventDefault();
+            const marca = document.getElementById('marcaMoto').value;
+            const modelo = document.getElementById('modeloMoto').value;
+            const precio = parseFloat(document.getElementById('precioMoto').value);
+            inventario.push({ id: idCounter++, tipo: 'Motocicleta', marca, modelo, precio });
+            alert('Se agregó la motocicleta');
+            event.target.reset();
+            ocultarFormularios();
+        }
+
+        function eliminarVehiculo() {
+            document.getElementById('listaEliminar').innerHTML = document.getElementById('listaVehiculos').innerHTML;
+            mostrarFormulario('formEliminar');
+        }
+
+        function procesarEliminar(event) {
+            event.preventDefault();
+            const id = parseInt(document.getElementById('idEliminar').value);
+            const index = inventario.findIndex(veh => veh.id === id);
+            if (index !== -1) {
+                inventario.splice(index, 1);
+                alert('Vehículo eliminado');
+            } else {
+                alert('ID no encontrado');
+            }
+            event.target.reset();
+            ocultarFormularios();
+        }
+
+        function venderVehiculo() {
+            document.getElementById('listaVender').innerHTML = document.getElementById('listaVehiculos').innerHTML;
+            mostrarFormulario('formVender');
+        }
+
+        function procesarVender(event) {
+            event.preventDefault();
+            const id = parseInt(document.getElementById('idVender').value);
+            const index = inventario.findIndex(veh => veh.id === id);
+            if (index !== -1) {
+                inventario.splice(index, 1);
+                alert('Vehículo vendido');
+            } else {
+                alert('ID no encontrado');
+            }
+            event.target.reset();
+            ocultarFormularios();
+        }
+
+        function modificarPrecio() {
+            document.getElementById('listaModificar').innerHTML = document.getElementById('listaVehiculos').innerHTML;
+            mostrarFormulario('formModificar');
+        }
+
+        function procesarModificar(event) {
+            event.preventDefault();
+            const id = parseInt(document.getElementById('idModificar').value);
+            const nuevoPrecio = parseFloat(document.getElementById('nuevoPrecio').value);
+            const veh = inventario.find(veh => veh.id === id);
+            if (veh) {
+                veh.precio = nuevoPrecio;
+                alert('Precio modificado');
+            } else {
+                alert('ID no encontrado');
+            }
+            event.target.reset();
+            ocultarFormularios();
+        }
+
+        function salir() {
+            if (confirm('¿Está seguro de que desea salir?')) {
+                window.close(); 
+            }
+        }
+    </script>
+</body>
+</html>
